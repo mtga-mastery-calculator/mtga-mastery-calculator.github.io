@@ -1,0 +1,100 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    border: 1px solid white;
+    padding: 3px;
+    max-width: 90%;
+    margin: auto;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+h1, h2 {
+    text-align: center;
+}
+h3 {
+    text-align: center;
+    font-weight: normal;
+}
+
+.slider-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.slider {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+.rewards {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-height: 500px;
+}
+.rewards > div {
+    min-width: 250px;
+}
+
+.rewards > div {
+    flex: 1;
+    margin: 0 10px;
+}
+li {
+    list-style-type: none;
+}
+.chart {
+    width: 60%;
+    margin: 0 auto;
+}
+.large {
+    font-size: 200%;
+}
+.reward_0 {
+    color: #006aff;
+    font-weight: bold;
+    font-size: 120%;
+}
+.reward_1 {
+    color: #ffff00;
+    font-weight: bold;
+    font-size: 110%;
+}
+.reward_2 {
+    color: #fff;
+    font-weight: regular;
+    font-size: 100%;
+}
+.reward_3 {
+    color: #fff;
+    font-weight: regular;
+    font-size: 100%;
+}
+.reward_4 {
+    color: #fff;
+    font-weight: regular;
+    font-size: 100%;
+}
+.reward_5, .reward_6, .reward_7, .reward_8, .reward_9, .reward_10 {
+    color: #aaa;
+    font-weight: regular;
+    font-size: 80%;
+}
+.reward_99 {
+    color: #f00;
+    font-weight: regular;
+    font-size: 100%;
+}
