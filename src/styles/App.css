@@ -8,7 +8,6 @@ body {
 
 .container {
     border: 1px solid white;
-    padding: 3px;
     max-width: 90%;
     margin: auto;
     margin-top: 3px;
@@ -52,6 +51,10 @@ h3 {
 .rewards > div {
     flex: 1;
     margin: 0 10px;
+}
+ul {
+    padding: 0;
+    margin: 0;
 }
 li {
     list-style-type: none;
@@ -97,4 +100,15 @@ li {
     color: #f00;
     font-weight: regular;
     font-size: 100%;
+}
+@media (max-width: 600px) {
+    .chart {
+        width: 90%;
+    }
+    .rewards ul {
+        font-size: 150%;
+    }
+    body {
+        font-size: 75%;
+    }
 }
