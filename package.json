@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "BUILD_PATH=docs react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -22,5 +22,17 @@
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.2"
   },
-  "homepage": "http://yourhomepage.com"
+  "homepage": "http://yourhomepage.com",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
