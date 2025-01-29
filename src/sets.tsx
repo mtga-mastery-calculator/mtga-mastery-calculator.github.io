@@ -62,6 +62,7 @@ export const sets: Set[] = [
     name: "Aetherdrift",
     startDate: new Date("2025-02-11T17:00:00Z"),
     endDate: new Date("2025-04-08T13:00:00Z"),
+    maxLevel: 60,
   },
   {
     code: "TDM",
