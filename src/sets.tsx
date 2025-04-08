@@ -70,6 +70,8 @@ export const sets: Set[] = [
     name: "Tarkir: Dragonstorm",
     startDate: new Date("2025-04-08T17:00:00Z"),
     endDate: new Date("2025-06-10T13:00:00Z"),
+    maxLevel: 70,
+    rewards: require("./data/rewardsTDM.json"),
   },
   {
     code: "FIN",
