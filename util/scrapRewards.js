@@ -33,7 +33,7 @@ fetch(url)
           if (!isNaN(level) && level != i + 1) {
             console.log("Level mismatch", level, i + 1);
           }
-          const split = reward.split(/, (?=[^,]*\b(?:Gems|Gold|Orb|Sleeve|Avatar|Companion|Pet|CS|ICR)\b)/);
+          const split = reward.split(/, (?=[^,]*\b(?:Gems|Gold|Orb|Sleeve|Avatar|Companion|Pet|CS|ICR)\b)/).flatMap(s => s.split(/(?<=Orbs?) & /));
           processedData[level - 1] = split.map(reward => {
             let count = 1;
             let item = reward;
