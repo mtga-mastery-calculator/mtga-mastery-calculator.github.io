@@ -79,4 +79,16 @@ export const sets: Set[] = [
     startDate: new Date("2025-06-10T17:00:00Z"),
     endDate: new Date("2025-07-29T13:00:00Z"),
   },
+  {
+    code: "EOE",
+    name: "Edge of Eternities",
+    startDate: new Date("2025-07-29T17:00:00Z"),
+    endDate: new Date("2025-09-23T13:00:00Z"),
+  },
+  {
+    code: "SPM",
+    name: "Marvel's Spider-Man",
+    startDate: new Date("2025-09-23T17:00:00Z"),
+    endDate: new Date("2025-11-18T13:00:00Z"),
+  }
 ];
