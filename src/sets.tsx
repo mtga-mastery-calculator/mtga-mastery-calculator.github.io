@@ -87,7 +87,7 @@ export const sets: Set[] = [
   },
   {
     code: "SPM",
-    name: "Marvel's Spider-Man",
+    name: "Through the Omenpaths",
     startDate: new Date("2025-09-23T17:00:00Z"),
     endDate: new Date("2025-11-18T13:00:00Z"),
   }
