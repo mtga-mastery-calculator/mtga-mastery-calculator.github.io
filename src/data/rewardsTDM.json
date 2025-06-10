@@ -149,7 +149,10 @@
     [1, "Common Depth CS", "Reputable Merchant"]
   ],
   [[1, "Booster", "BLB"]],
-  [[1, "Common Depth CS", "Temur Tawnyback"]],
+  [
+    [1, "Orb"],
+    [1, "Common Depth CS", "Temur Tawnyback"]
+  ],
   [[1, "Mythic Rare ICR"]],
   [[1,  "Uncommon ICR - 5% Upgrade"]]
 ]
