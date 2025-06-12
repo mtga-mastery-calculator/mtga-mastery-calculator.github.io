@@ -165,7 +165,7 @@ const RewardItem: React.FC<RewardItemProps> = ({ item, count, subitems }) => (
 
 const aggregateRewards = (rewards: Rewards, startLevel: number, endLevel: number) => {
   const aggregated = new Map<string, number>();
-  const subitems = new Map<string, string[]>();
+  const subitems = new Map<string, [string, number][]>();
   const aggregatedSubitems = new Map<string, Map<string, number>>();
 
   for (let level = startLevel; level <= endLevel; level++) {
@@ -174,15 +174,15 @@ const aggregateRewards = (rewards: Rewards, startLevel: number, endLevel: number
         aggregated.set(item, (aggregated.get(item) ?? 0) + count);
         if (subitem) {
           const list = subitems.get(item) ?? [];
-          list.push(subitem);
+          list.push([subitem, count]);
           subitems.set(item, list);
         }
     });
   }
   subitems.forEach((list, item) => {
     const subitemCounts = new Map<string, number>();
-    list.forEach(subitem => {
-    subitemCounts.set(subitem, (subitemCounts.get(subitem) ?? 0) + 1);
+    list.forEach(([subitem, count]) => {
+    subitemCounts.set(subitem, (subitemCounts.get(subitem) ?? 0) + count);
     });
     aggregatedSubitems.set(item, subitemCounts);
   });

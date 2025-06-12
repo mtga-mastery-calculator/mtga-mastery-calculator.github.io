@@ -34,7 +34,7 @@ fetch(url)
             console.log("Level mismatch", level, i + 1);
           }
           const split = reward.split(/, (?=[^,]*\b(?:Gems|Gold|Orb|Sleeve|Avatar|Companion|Pet|CS|ICR)\b)/).flatMap(s => s.split(/(?<=Orbs?) & /));
-          processedData[level - 1] = split.map(reward => {
+          processedData.push(split.map(reward => {
             let count = 1;
             let item = reward;
             let set;
@@ -56,7 +56,7 @@ fetch(url)
 
 
           return set ? [ count, item, set ] : [ count, item ];
-          });
+          }));
         });
 
         console.log(JSON.stringify(processedData));

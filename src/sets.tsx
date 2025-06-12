@@ -76,21 +76,22 @@ export const sets: Set[] = [
   {
     code: "FIN",
     name: "Final Fantasy",
-    startDate: new Date("2025-06-10T17:00:00Z"),
+    startDate: new Date("2025-06-10T16:00:00Z"),
     endDate: new Date("2025-07-29T13:00:00Z"),
     maxLevel: 50,
+    rewards: require("./data/rewardsFIN.json"),
   },
   {
     code: "EOE",
     name: "Edge of Eternities",
-    startDate: new Date("2025-07-29T17:00:00Z"),
+    startDate: new Date("2025-07-29T16:00:00Z"),
     endDate: new Date("2025-09-23T13:00:00Z"),
     maxLevel: 60,
   },
   {
     code: "SPM",
     name: "Through the Omenpaths",
-    startDate: new Date("2025-09-23T17:00:00Z"),
+    startDate: new Date("2025-09-23T16:00:00Z"),
     endDate: new Date("2025-11-18T13:00:00Z"),
     maxLevel: 60,
   }
