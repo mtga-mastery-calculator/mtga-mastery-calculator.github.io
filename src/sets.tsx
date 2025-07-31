@@ -86,7 +86,7 @@ export const sets: Set[] = [
     name: "Edge of Eternities",
     startDate: new Date("2025-07-29T16:00:00Z"),
     endDate: new Date("2025-09-23T13:00:00Z"),
-    maxLevel: 70,
+    maxLevel: 60,
   },
   {
     code: "SPM",
