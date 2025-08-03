@@ -132,6 +132,7 @@ const sortKeys: [ RegExp | String, number ][] = [
   [ /\bCard$/, 4 ],
   [ 'Orb', 5 ],
   [ /\bCS\b/, 9 ],
+  [ 'Card Style', 9 ],
   [ /\bPet\b|\bCompanion\b/, 6 ],
   [ /\bAvatar\b/, 7 ],
   [ /\bSleeve\b/, 8 ],
