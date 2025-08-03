@@ -47,7 +47,7 @@ fetch(url)
           }
           const setMatch = item.match(/^(\w{3}) (Booster)$/);
           if (setMatch) [, set, item] = setMatch;
-          const styleMatch = item.match(/^(.* CS)(?::| -) (.*)$/);
+          const styleMatch = item.match(/^(.* CS|Card Style)(?::| -) (.*)$/);
           if (styleMatch) [, item, set] = styleMatch;
           const emoteMatch = item.match(/^(.* Emote) - (.*)$/);
           if (emoteMatch) [, item, set] = emoteMatch;
