@@ -95,5 +95,12 @@ export const sets: Set[] = [
     startDate: new Date("2025-09-23T16:00:00Z"),
     endDate: new Date("2025-11-18T13:00:00Z"),
     maxLevel: 60,
+  },
+  {
+    code: "TLA",
+    name: "Avatar: The Last Airbender",
+    startDate: new Date("2025-11-18T15:00:00Z"),
+    endDate: new Date("2026-01-20T13:00:00Z"),
+    maxLevel: 70,
   }
 ];
