@@ -90,11 +90,12 @@ export const sets: Set[] = [
     rewards: require("./data/rewardsEOE.json"),
   },
   {
-    code: "SPM",
+    code: "OM1",
     name: "Through the Omenpaths",
     startDate: new Date("2025-09-23T16:00:00Z"),
     endDate: new Date("2025-11-18T13:00:00Z"),
     maxLevel: 60,
+    rewards: require("./data/rewardsOM1.json"),
   },
   {
     code: "TLA",
