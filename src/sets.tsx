@@ -93,7 +93,7 @@ export const sets: Set[] = [
     code: "OM1",
     name: "Through the Omenpaths",
     startDate: new Date("2025-09-23T16:00:00Z"),
-    endDate: new Date("2025-11-18T13:00:00Z"),
+    endDate: new Date("2025-11-18T12:00:00Z"), // The countdown in emporium suggests 12:00 (related to the DST change?)
     maxLevel: 60,
     rewards: require("./data/rewardsOM1.json"),
   },
@@ -101,7 +101,8 @@ export const sets: Set[] = [
     code: "TLA",
     name: "Avatar: The Last Airbender",
     startDate: new Date("2025-11-18T15:00:00Z"),
-    endDate: new Date("2026-01-20T13:00:00Z"),
-    maxLevel: 70,
+    endDate: new Date("2026-01-20T12:00:00Z"),
+    maxLevel: 60,
+    rewards: require("./data/rewardsTLA.json"),
   }
 ];
