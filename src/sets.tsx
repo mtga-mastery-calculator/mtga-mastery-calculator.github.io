@@ -104,5 +104,11 @@ export const sets: Set[] = [
     endDate: new Date("2026-01-20T12:00:00Z"),
     maxLevel: 60,
     rewards: require("./data/rewardsTLA.json"),
+  },
+  {
+    code: "ECL",
+    name: "Lorwyn Eclipsed",
+    startDate: new Date("2026-01-20T15:00:00Z"),
+    endDate: new Date("2026-03-03T12:00:00Z"),
   }
 ];
