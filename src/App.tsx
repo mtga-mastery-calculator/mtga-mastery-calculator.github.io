@@ -259,7 +259,7 @@ const App = () => {
       <h1>MTGA Mastery Calculator</h1>
       <div className="info">
         <h3><span className='large'>{set.name}: {formatDate(set.startDate)} - {formatDate(set.endDate)}</span></h3>
-        <h3>Time Remaining: {now > set.endDate ? "Expired" : `${timeRemainaing.days}d ${timeRemainaing.hours}h ${timeRemainaing.minutes}m`}</h3>
+        <h3>Time Remaining: {now > set.endDate ? `Expired (lasted ${Math.ceil((set.endDate.getTime() - set.startDate.getTime()) / (1000 * 60 * 60 * 24))} days)` : `${timeRemainaing.days}d ${timeRemainaing.hours}h ${timeRemainaing.minutes}m`}</h3>
         <h2>Remaining XP: <span className="large"><FormattedXP xp={remainingXP}/></span>/<FormattedXP xp={totalXP}/></h2>
       </div>
       <div className="container">
