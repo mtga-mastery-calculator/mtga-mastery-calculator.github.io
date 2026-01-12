@@ -110,5 +110,12 @@ export const sets: Set[] = [
     name: "Lorwyn Eclipsed",
     startDate: new Date("2026-01-20T15:00:00Z"),
     endDate: new Date("2026-03-03T12:00:00Z"),
+    maxLevel: 40,
+  },
+  {
+    code: "TMT",
+    name: "Teenage Mutant Ninja Turtles",
+    startDate: new Date("2026-03-03T15:00:00Z"),
+    endDate: new Date("2026-04-21T12:00:00Z"),
   }
 ];
