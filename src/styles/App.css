@@ -6,6 +6,25 @@ body {
     padding: 0;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.github-link {
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 0px;
+    transition: color 0.2s;
+}
+
+.github-link:hover {
+    color: #1f6feb;
+}
+
 .container {
     border: 1px solid white;
     max-width: 90%;

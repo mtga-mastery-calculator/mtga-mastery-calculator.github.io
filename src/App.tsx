@@ -261,6 +261,7 @@ const App = () => {
 
   return (
     <div className="app">
+      <div className="header">
         <select value={set.code} onChange={e => setSet(sets.find(s => s.code === e.target.value) ?? set)}>
           {sets.map(s => (
             <option key={s.code} value={s.code}>
@@ -268,6 +269,15 @@ const App = () => {
             </option>
           ))}
         </select>
+        <a
+          href="https://github.com/mtga-mastery-calculator/mtga-mastery-calculator.github.io/issues/new"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="github-link"
+        >
+          Report issues & suggestions
+        </a>
+      </div>
       <h1>MTGA Mastery Calculator</h1>
       <div className="info">
         <h3><span className='large'>{set.name}: {formatDate(set.startDate)} - {formatDate(set.endDate)}</span></h3>
