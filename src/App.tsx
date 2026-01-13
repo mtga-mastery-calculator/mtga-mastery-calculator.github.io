@@ -3,6 +3,77 @@ import { Line } from 'react-chartjs-2';
 import { Set, sets, Rewards } from './sets';
 import './styles/App.css';
 
+const mythinUpgadeForSet: { [key: string]: number } = {
+  'FIN': 1/8.4,
+  'OM1': 15/121, // ~1/8.1,
+  'LCI': 11/75, //  ~1/6.8,
+};
+const bonusUpgradeForSet: { [key: string]: number } = {
+  'TLA': 1/25,
+  'OM1': 1/64,
+  'FIN': 1/3,
+  'TDM': 1/60,
+  'DFT': 1/64,
+  'MKM': 1/8,
+};
+function packsToWildcards(packs: number, isMythic: boolean, isGoldenPack: boolean, withVault: boolean, set: string) {
+  const mythicUpgrade = mythinUpgadeForSet[set] ?? 1/7;
+  const mythicCardUpgrade = isMythic ? 1 : mythicUpgrade;
+  const goldenMythicUpgrade = 1/6; // "approximately"
+  const bonusUpgrade = bonusUpgradeForSet[set] ?? 0;
+  const commonWCInPack = 1/3;
+  const uncommonWCInPack = 1/5;
+  const rareWCInPack = 1/30 * (1 - mythicUpgrade);
+  const mythicWCInPack = 1/30 * mythicUpgrade;
+
+  const rareInGoldenPack = isGoldenPack ? 5 * (1 - goldenMythicUpgrade) / 10 : 0;
+  const mythicInGoldenPack = isGoldenPack ? (1 + 5 * goldenMythicUpgrade) / 10 : 0;
+
+  const uncommonWheel = 1/6 * (isGoldenPack ? 1.1 : 1);
+  const rareWheel = 1/6 * (1 - 1/5) * (isGoldenPack ? 1.1 : 1);
+  const mythicWheel = 1/6 * 1/5 * (isGoldenPack ? 1.1 : 1);
+
+  const commonsInPack = 5 - commonWCInPack - bonusUpgrade;
+  const uncommonsInPack = 2 - uncommonWCInPack;
+  const raresInPack = (1 - rareWCInPack - mythicWCInPack) * (1 - mythicCardUpgrade);
+  const mythicsInPack = (1 - rareWCInPack - mythicWCInPack) * mythicCardUpgrade;
+  const bonusInPack = bonusUpgrade;
+
+  const vaultProgress = withVault ? commonsInPack * 0.1 + uncommonsInPack * 0.3 : 0;
+  const vaultUncommonWC = vaultProgress / 100 * 3;
+  const vaultRareWC = vaultProgress / 100 * 2;
+  const vaultMythicWC = vaultProgress / 100 * 1;
+  return {
+    u: packs * (uncommonWCInPack + uncommonWheel + vaultUncommonWC),
+    r: packs * (rareWCInPack + rareWheel + vaultRareWC),
+    m: packs * (mythicWCInPack + mythicWheel + vaultMythicWC),
+    c: packs * (commonWCInPack),
+    totalCommons: packs * commonsInPack,
+    totalUncommons: packs * uncommonsInPack,
+    totalRares: packs * (raresInPack + rareInGoldenPack),
+    totalMythics: packs * (mythicsInPack + mythicInGoldenPack),
+    totalBonus: packs * bonusInPack,
+    fromWheel: {
+      u: packs * uncommonWheel,
+      r: packs * rareWheel,
+      m: packs * mythicWheel,
+    },
+    fromVault: {
+      u: packs * vaultUncommonWC,
+      r: packs * vaultRareWC,
+      m: packs * vaultMythicWC,
+    },
+    fromPacks: {
+      u: packs * uncommonWCInPack,
+      r: packs * rareWCInPack,
+      m: packs * mythicWCInPack,
+      c: packs * commonWCInPack,
+    },
+    vaultProgress: packs * vaultProgress,
+  }
+}
+
+
 function presentSet(now: Date): Set {
   return sets.filter(set => set.startDate <= now).reduce((latest, set) => set.startDate > latest.startDate ? set : latest);
 }
@@ -204,9 +275,119 @@ const aggregateRewards = (rewards: Rewards, startLevel: number, endLevel: number
     .sort((a, b) => getSortKey(a.item) - getSortKey(b.item));
 };
 
+const FormattedCount = ({ count }: { count: number }) => {
+  const formattedCount = count.toFixed(2);
+  return (
+    <span className="formatted-count">
+      {formattedCount.slice(0, -3)}
+      <span style={{ fontSize: '0.8em', color: '#aaa' }}>{formattedCount.slice(-3)}</span>
+    </span>
+  );
+};
+
+const PacksCalculator: React.FC<{ set: Set }> = ({ set }) => {
+  const [numPacks, setNumPacks] = useState(100);
+  const [isMythic, setIsMythic] = useState(false);
+  const [isGoldenPack, setIsGoldenPack] = useState(false);
+  const [withVault, setWithVault] = useState(true);
+
+  const results = packsToWildcards(numPacks, isMythic, isGoldenPack, withVault, set.code);
+
+  return (
+    <div className="packs-calculator">
+      <div className="info">
+        <h3>For set: {set.name}</h3>
+      </div>
+      <div className="container" style={{ alignItems: 'flex-start', padding: '10px' }}>
+        <SliderInput
+          label="Number of Packs"
+          value={numPacks}
+          onChange={setNumPacks}
+          min={1}
+          max={500}
+        />
+        <label style={{ margin: '10px', color: 'white', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={isMythic}
+            onChange={(e) => setIsMythic(e.target.checked)}
+            style={{ marginRight: '10px', width: '20px', height: '20px' }}
+          />
+          Mythic packs
+        </label>
+        <label style={{ margin: '10px', color: 'white', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={isGoldenPack}
+            onChange={(e) => setIsGoldenPack(e.target.checked)}
+            style={{ marginRight: '10px', width: '20px', height: '20px' }}
+          />
+          Include Golden Packs
+        </label>
+        <label style={{ margin: '10px', color: 'white', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={withVault}
+            onChange={(e) => setWithVault(e.target.checked)}
+            style={{ marginRight: '10px', width: '20px', height: '20px' }}
+          />
+          Include Vault progress (assume C/UC completion)
+        </label>
+      </div>
+      <div className="rewards">
+        <div>
+          <h2>Wildcards Expected</h2>
+          <ul>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.m} /> Mythic WC</li>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.r} /> Rare WC</li>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.u} /> Uncommon WC</li>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.c} /> Common WC</li>
+          </ul>
+          <h3>From Packs</h3>
+          <ul style={{ fontSize: '90%', color: '#aaa' }}>
+            <li><FormattedCount count={results.fromPacks.m} /> Mythic WC</li>
+            <li><FormattedCount count={results.fromPacks.r} /> Rare WC</li>
+            <li><FormattedCount count={results.fromPacks.u} /> Uncommon WC</li>
+            <li><FormattedCount count={results.fromPacks.c} /> Common WC</li>
+          </ul>
+          <h3>From Wildcard Track</h3>
+          <ul style={{ fontSize: '90%', color: '#aaa' }}>
+            <li><FormattedCount count={results.fromWheel.m} /> Mythic WC</li>
+            <li><FormattedCount count={results.fromWheel.r} /> Rare WC</li>
+            <li><FormattedCount count={results.fromWheel.u} /> Uncommon WC</li>
+          </ul>
+          {withVault && (
+            <>
+              <h3>From Vault ({results.vaultProgress.toFixed(1)}%)</h3>
+              <ul style={{ fontSize: '90%', color: '#aaa' }}>
+                <li><FormattedCount count={results.fromVault.m} /> Mythic WC</li>
+                <li><FormattedCount count={results.fromVault.r} /> Rare WC</li>
+                <li><FormattedCount count={results.fromVault.u} /> Uncommon WC</li>
+              </ul>
+            </>
+          )}
+        </div>
+        <div>
+          <h2>Cards Expected</h2>
+          <ul>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalMythics} /> Mythic</li>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalRares} /> Rare</li>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalCommons} /> Common</li>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalUncommons} /> Uncommon</li>
+            {results.totalBonus > 0 && (
+              <li style={{ fontSize: '110%' }}><FormattedCount count={results.totalBonus} /> Bonus sheet</li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const App = () => {
   const [now, setNow] = useState(new Date());
   const [set, setSet] = useState(presentSet(now));
+  const [calculatorMode, setCalculatorMode] = useState<'mastery' | 'packs'>('mastery');
   const nowClipped = now < set.startDate ? set.startDate : now;
   const {questsLeft} = getTimeLeft(nowClipped, set);
   const [questCompletion, setQuestCompletion] = useState<number | undefined>(undefined);
@@ -278,7 +459,25 @@ const App = () => {
           Report issues & suggestions
         </a>
       </div>
-      <h1>MTGA Mastery Calculator</h1>
+      <h1>MTGA Calculator</h1>
+      <div className="calculator-switcher">
+        <button
+          className={calculatorMode === 'mastery' ? 'active' : ''}
+          onClick={() => setCalculatorMode('mastery')}
+        >
+          Mastery Progress
+        </button>
+        <button
+          className={calculatorMode === 'packs' ? 'active' : ''}
+          onClick={() => setCalculatorMode('packs')}
+        >
+          Packs to Wildcards
+        </button>
+      </div>
+      {calculatorMode === 'packs' ? (
+        <PacksCalculator set={set} />
+      ) : (
+        <>
       <div className="info">
         <h3><span className='large'>{set.name}: {formatDate(set.startDate)} - {formatDate(set.endDate)}</span></h3>
         <h3>Time Remaining: {now > set.endDate ? `Expired (lasted ${Math.ceil((set.endDate.getTime() - set.startDate.getTime()) / (1000 * 60 * 60 * 24))} days)` : `${timeRemainaing.days}d ${timeRemainaing.hours}h ${timeRemainaing.minutes}m`}</h3>
@@ -384,6 +583,8 @@ const App = () => {
         </div>
       </div>
       }
+      </>
+      )}
     </div>
   );
 };
