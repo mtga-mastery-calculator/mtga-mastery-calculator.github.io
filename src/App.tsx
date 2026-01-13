@@ -68,11 +68,16 @@ function getXPForDate(date: Date, set: Set, winsPerDay: number = 10, winsPerWeek
   return xpPerDay * daysLeft + xpPerWeek * sundaysLeft + xpPerQuest * (questWins !== undefined ? Math.min(questsLeft, questWins): questsLeft);
 }
 
-function getGoldPerWeek(winsPerDay: number, questPercent: number): number {
+function getGoldPerWeek(winsPerDay: number, questPercent: number): { min: number; max: number; avg: number } {
   const goldRewards = [250, 100, 100, 100, 0, 50, 0, 50, 0, 50, 0, 25, 0, 25, 0];
   const goldCummulative = goldRewards.slice(0, winsPerDay).reduce((a, b) => a + b, 0);
   const questGold = (500 * 9 + 750 * 7) / 16;
-  return Math.floor(7 * (goldCummulative + questGold * questPercent));
+  const questGoldMin = 500, questGoldMax = 750;
+  return {
+    min: Math.floor(7 * (goldCummulative + questGoldMin * questPercent)),
+    max: Math.floor(7 * (goldCummulative + questGoldMax * questPercent)),
+    avg: Math.floor(7 * (goldCummulative + questGold * questPercent)),
+  }
 }
 
 interface SliderInputProps {
@@ -297,7 +302,7 @@ const App = () => {
       </div>
       <div className="info">
         <h2>Projcted XP to earn: <span className="large"><FormattedXP xp={estimatedXP}/></span></h2>
-        <h3>Avg weekly gold: <span className="large"><FormattedXP xp={weeklyGold}/></span></h3>
+        <h3>Avg weekly gold: <span className="large"><FormattedXP xp={weeklyGold.avg}/></span> (<FormattedXP xp={weeklyGold.min}/> - <FormattedXP xp={weeklyGold.max}/>)</h3>
       </div>
       <div className="chart">
         <div style={{ border: '1px solid white', padding: '20px' }}>
