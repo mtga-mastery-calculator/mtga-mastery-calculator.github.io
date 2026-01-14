@@ -23,8 +23,8 @@ function packsToWildcards(packs: number, isMythic: boolean, isGoldenPack: boolea
   const bonusUpgrade = bonusUpgradeForSet[set] ?? 0;
   const commonWCInPack = 1/3;
   const uncommonWCInPack = 1/5;
-  const rareWCInPack = 1/30 * (1 - mythicUpgrade);
-  const mythicWCInPack = 1/30 * mythicUpgrade;
+  const rareWCInPack = 1/30; // * (1 - mythicUpgrade);
+  const mythicWCInPack = 1/30; // * mythicUpgrade;
 
   const rareInGoldenPack = isGoldenPack ? 5 * (1 - goldenMythicUpgrade) / 10 : 0;
   const mythicInGoldenPack = isGoldenPack ? (1 + 5 * goldenMythicUpgrade) / 10 : 0;
