@@ -33,7 +33,7 @@ fetch(url)
           if (!isNaN(level) && level != i + 1) {
             console.log("Level mismatch", level, i + 1);
           }
-          const split = reward.split(/, (?=[^,]*\b(?:Gems|Gold|Orb|Sleeve|Avatar|Companion|Pet|CS|ICR)\b)/).flatMap(s => s.split(/(?<=Orbs?) & /));
+          const split = reward.split(/, (?=[^,]*\b(?:Gems|Gold|Orb|Sleeve|Avatar|Companion|Pet|CS|ICR)\b)/).flatMap(s => s.split(/(?<=Orbs?|Boosters?) & /));
           processedData.push(split.map(reward => {
             let count = 1;
             let item = reward;
@@ -49,6 +49,8 @@ fetch(url)
           if (setMatch) [, set, item] = setMatch;
           const styleMatch = item.match(/^(.* CS|Card Style)(?::| -) (.*)$/);
           if (styleMatch) [, item, set] = styleMatch;
+          const styleMatch2 = item.match(/^(.*) (Card Style)$/);
+          if (styleMatch2) [, set, item] = styleMatch2;
           const emoteMatch = item.match(/^(.* Emote) - (.*)$/);
           if (emoteMatch) [, item, set] = emoteMatch;
           const cardMatch = item.match(/^(.* Card)(?: –| -) (.*)$/); // OTJ
