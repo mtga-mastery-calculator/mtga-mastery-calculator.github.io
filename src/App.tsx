@@ -15,6 +15,8 @@ const bonusUpgradeForSet: { [key: string]: number } = {
   'TDM': 1/60,
   'DFT': 1/64,
   'MKM': 1/8,
+  'OTJ': 1,
+  'EOE': 1/55,
 };
 function packsToWildcards(packs: number, isMythic: boolean, isGoldenPack: boolean, withVault: boolean, set: string) {
   const mythicUpgrade = mythinUpgadeForSet[set] ?? 1/7;
