@@ -17,6 +17,7 @@ const bonusUpgradeForSet: { [key: string]: number } = {
   'MKM': 1/8,
   'OTJ': 1,
   'EOE': 1/55,
+  'ECL': 1/55,
 };
 function packsToWildcards(packs: number, isMythic: boolean, isGoldenPack: boolean, withVault: boolean, set: string) {
   const mythicUpgrade = mythinUpgadeForSet[set] ?? 1/7;
@@ -374,8 +375,8 @@ const PacksCalculator: React.FC<{ set: Set }> = ({ set }) => {
           <ul>
             <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalMythics} /> Mythic</li>
             <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalRares} /> Rare</li>
-            <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalCommons} /> Common</li>
             <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalUncommons} /> Uncommon</li>
+            <li style={{ fontSize: '120%' }}><FormattedCount count={results.totalCommons} /> Common</li>
             {results.totalBonus > 0 && (
               <li style={{ fontSize: '110%' }}><FormattedCount count={results.totalBonus} /> Bonus sheet</li>
             )}
