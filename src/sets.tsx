@@ -118,5 +118,34 @@ export const sets: Set[] = [
     name: "Teenage Mutant Ninja Turtles",
     startDate: new Date("2026-03-03T15:00:00Z"),
     endDate: new Date("2026-04-21T12:00:00Z"),
+    maxLevel: 50,
+  },
+  {
+    code: "SOS",
+    name: "Secrets of Strixhaven",
+    startDate: new Date("2026-04-21T15:00:00Z"),
+    endDate: new Date("2026-06-23T12:00:00Z"),
+    maxLevel: 70,
+  },
+  {
+    code: "OM2",
+    name: "Through the Omenpaths 2", // Guess
+    startDate: new Date("2026-06-23T15:00:00Z"),
+    endDate: new Date("2026-08-11T12:00:00Z"),
+    maxLevel: 50,
+  },
+  {
+    code: "THT", // Guess
+    name: "The Hobbit",
+    startDate: new Date("2026-08-11T15:00:00Z"),
+    endDate: new Date("2026-09-29T12:00:00Z"),
+    maxLevel: 50,
+  },
+  {
+    code: "RFR", // Guess
+    name: "Reality Fractured",
+    startDate: new Date("2026-09-29T15:00:00Z"),
+    endDate: new Date("2026-11-17T12:00:00Z"),
+    maxLevel: 50,
   }
 ];
