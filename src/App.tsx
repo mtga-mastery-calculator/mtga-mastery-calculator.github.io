@@ -390,7 +390,15 @@ const PacksCalculator: React.FC<{ set: Set }> = ({ set }) => {
 const App = () => {
   const [now, setNow] = useState(new Date());
   const [set, setSet] = useState(presentSet(now));
-  const [calculatorMode, setCalculatorMode] = useState<'mastery' | 'packs'>('mastery');
+
+  // Initialize calculator mode from URL
+  const getInitialMode = (): 'mastery' | 'packs' => {
+    const path = window.location.pathname;
+    if (path === '/packs') return 'packs';
+    return 'mastery';
+  };
+
+  const [calculatorMode, setCalculatorMode] = useState<'mastery' | 'packs'>(getInitialMode());
   const nowClipped = now < set.startDate ? set.startDate : now;
   const {questsLeft} = getTimeLeft(nowClipped, set);
   const [questCompletion, setQuestCompletion] = useState<number | undefined>(undefined);
@@ -412,6 +420,18 @@ const App = () => {
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 60000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Update URL when calculator mode changes
+  useEffect(() => {
+    const path = `/${calculatorMode}`;
+    if (window.location.pathname !== path) window.history.pushState(null, '', path);
+  }, [calculatorMode]);
+
+  useEffect(() => {
+    const handlePopState = () => { setCalculatorMode(getInitialMode()); };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const chartData = {
