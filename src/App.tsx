@@ -400,11 +400,29 @@ const App = () => {
 
   const [calculatorMode, setCalculatorMode] = useState<'mastery' | 'packs'>(getInitialMode());
   const nowClipped = now < set.startDate ? set.startDate : now;
+  const isCurrentSet = set.code === presentSet(now).code;
   const {questsLeft} = getTimeLeft(nowClipped, set);
   const [questCompletion, setQuestCompletion] = useState<number | undefined>(undefined);
   const [dailyWins, setDailyWins] = useState(4);  
   const [weeklyWins, setWeeklyWins] = useState(15);
-  const [currentXP, setCurrentXP] = useState(0);
+
+  // Initialize from localStorage
+  const [currentXPBySet, setCurrentXPBySet] = useState<{ [key: string]: number }>(() => {
+    try {
+      const stored = localStorage.getItem('currentXPBySet');
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  const currentXP = currentXPBySet[set.code] ?? 0;
+  const setCurrentXP = (xpOrUpdater: number | ((prev: number) => number)) => {
+    setCurrentXPBySet(prev => ({
+      ...prev,
+      [set.code]: typeof xpOrUpdater === 'function' ? xpOrUpdater(prev[set.code] ?? 0) : xpOrUpdater
+    }));
+  };
   const [remQuests, setRemQuests] = useState(0);
   const [remDailyWins, setRemDailyWins] = useState(0);
   const [remWeeklyWins, setRemWeeklyWins] = useState(0);
@@ -413,7 +431,7 @@ const App = () => {
   const remainingXP = getXPForDate(nowClipped, set);
   const estimatedXP = getXPForDate(nowClipped, set, dailyWins, weeklyWins, questCompletion);
   const weeklyGold = getGoldPerWeek(dailyWins, questsLeft ? ((questCompletion ?? questsLeft) / questsLeft) : 1);
-  const maxXP = estimatedXP + currentXP + remQuests * 500 + remDailyWins * 25 + remWeeklyWins * 250;
+  const maxXP = estimatedXP + currentXP + (isCurrentSet ? remQuests * 500 + remDailyWins * 25 + remWeeklyWins * 250 : 0);
   const graphDates = getDatesBetween(set, 24);
   const maxLevel = set.maxLevel;
 
@@ -421,6 +439,11 @@ const App = () => {
     const interval = setInterval(() => setNow(new Date()), 60000);
     return () => clearInterval(interval);
   }, []);
+
+  // Save currentXPBySet to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('currentXPBySet', JSON.stringify(currentXPBySet));
+  }, [currentXPBySet]);
 
   // Update URL when calculator mode changes
   useEffect(() => {
@@ -558,7 +581,7 @@ const App = () => {
         step={25}
       />
       </div>
-      <div className='container'>
+      {isCurrentSet && <div className='container'>
       <SliderInput
         label="Incomplete Quests"
         value={remQuests}
@@ -580,7 +603,7 @@ const App = () => {
         min={0}
         max={15}
       />
-      </div>
+      </div>}
       <div className="info">
         <h2>Target level: <span className="large">{xpToLevel(maxXP)}</span>{maxLevel && <span>/{maxLevel}</span>}</h2>
       </div>
