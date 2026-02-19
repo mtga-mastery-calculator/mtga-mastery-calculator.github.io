@@ -506,7 +506,7 @@ const LandDrawCalculator: React.FC = () => {
     ],
   };
 
-  const chartOptions = {
+  const chartOptions: any = {
     responsive: true,
     plugins: {
       legend: {
