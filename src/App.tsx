@@ -393,8 +393,8 @@ const App = () => {
 
   // Initialize calculator mode from URL
   const getInitialMode = (): 'mastery' | 'packs' => {
-    const path = window.location.pathname;
-    if (path === '/packs') return 'packs';
+    const hash = window.location.hash;
+    if (hash === '#packs') return 'packs';
     return 'mastery';
   };
 
@@ -447,14 +447,14 @@ const App = () => {
 
   // Update URL when calculator mode changes
   useEffect(() => {
-    const path = `/${calculatorMode}`;
-    if (window.location.pathname !== path) window.history.pushState(null, '', path);
+    const hash = `#${calculatorMode}`;
+    if (window.location.hash !== hash) window.location.hash = hash;
   }, [calculatorMode]);
 
   useEffect(() => {
-    const handlePopState = () => { setCalculatorMode(getInitialMode()); };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    const handleHashChange = () => { setCalculatorMode(getInitialMode()); };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const chartData = {
