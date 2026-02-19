@@ -592,7 +592,10 @@ const LandDrawCalculator: React.FC = () => {
               ? `at least ${targetMin}`
               : `${targetMin}-${targetMax}`
           } lands:{' '}
-          <span className="large" style={{ color: '#58a6ff' }}>{(targetProbability * 100).toFixed(2)}%</span>
+          <span className="large" style={{ color: '#58a6ff' }}>
+            {targetProbability > 0 && targetProbability < 0.0001 ? '<0.01%' : `${(targetProbability * 100).toFixed(2)}%`}
+          </span>
+            {targetProbability > 0 && targetProbability < 0.0005 && ` (1 in ${Math.round(1/targetProbability)})`}
         </h2>
       </div>
       <div className="chart" style={{ maxWidth: '800px', margin: '20px auto' }}>
