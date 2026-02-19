@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Line, Pie } from 'react-chartjs-2';
 import { Set, sets, Rewards } from './sets';
 import './styles/App.css';
 
@@ -75,7 +75,84 @@ function packsToWildcards(packs: number, isMythic: boolean, isGoldenPack: boolea
     vaultProgress: packs * vaultProgress,
   }
 }
+/**
+ * Calculates the probability of getting at least x successes in y draws.
+ * @param {number} x - Minimum required successes (at least x As).
+ * @param {number} y - Total number of draws.
+ * @param {number} a - Total number of successes in population (As).
+ * @param {number} N - Total population size.
+ * @returns {number} The probability (0 to 1).
+ */
+function probabilityAtLeastX(x: number, y: number, a: number, N: number): number {
+  let totalProbability = 0;
+  // Sum probabilities for k successes from x up to the maximum possible
+  // Max successes is limited by either total draws (y) or total available As (a)
+  const maxSuccesses = Math.min(y, a);
+  for (let k = x; k <= maxSuccesses; k++) {
+    totalProbability += hypergeometricPMF(k, N, a, y);
+  }
+  return totalProbability;
+}
+/**
+ * Calculates the probability distribution for getting k successes in y draws.
+ * @param {number} y - Total number of draws.
+ * @param {number} a - Total number of successes in population (As).
+ * @param {number} N - Total population size.
+ * @returns {number[]} Array of probabilities where index k represents P(X = k).
+ */
+function probabilityDistribution(y: number, a: number, N: number): number[] {
+  return [...Array(Math.min(y, a) + 1)].map((_, k) => hypergeometricPMF(k, N, a, y));
+}
+function probabilityDistributionWithSmoothing(y: number, a: number, N: number): number[] {
+  const avg = y * a / N;
+  const cntToWeight = (k: number) => 1 / Math.pow(4, Math.pow(Math.abs(k - avg), 2.5));
+  const handWeights = probabilityDistribution(y, a, N);
+  const weights = [...Array(y + 1)].map((_, k) => cntToWeight(k));
+  const probabilities = [...Array(y + 1)].fill(0);
+  for (let h1 = 0; h1 <= y; h1++) {
+    for (let h2 = 0; h2 <= y; h2++) {
+      for (let h3 = 0; h3 <= y; h3++) {
+        const p = handWeights[h1] * handWeights[h2] * handWeights[h3] || 0;
+        const h1w = weights[h1], h2w = weights[h2], h3w = weights[h3];
+        const t = h1w + h2w + h3w;
+        probabilities[h1] += p * h1w / t;
+        probabilities[h2] += p * h2w / t;
+        probabilities[h3] += p * h3w / t;
+      }
+    }
+  }
+  return probabilities;
+}
+function probabilityDistributionWithSmoothing7(y: number, a: number, N: number): number[] {
+  const first7distribution = probabilityDistributionWithSmoothing(Math.min(7, y), a, N);
+  const restDistribution = probabilityDistribution(y - Math.min(7, y), a, N);
+  const probabilities = [...Array(y + 1)].fill(0);
+  for (let first7 = 0; first7 <= Math.min(7, y); first7++) {
+    for (let rest = 0; rest <= y - Math.min(7, y); rest++) {
+      probabilities[first7 + rest] += first7distribution[first7] * restDistribution[rest];
+    }
+  }
+  return probabilities;
+}
 
+/**
+ * Probability Mass Function (PMF) for exactly k successes.
+ * Formula: P(k) = [aCk * bC(y-k)] / NCy
+ */
+function hypergeometricPMF(k: number, N: number, a: number, y: number): number {
+  if (k < 0 || k > a || (y - k) > (N - a) || (y - k) < 0) return 0;
+  return (combinations(a, k) * combinations(N - a, y - k)) / combinations(N, y);
+}
+function combinations(n: number, r: number): number {
+  if (r < 0 || r > n) return 0;
+  if (r === 0 || r === n) return 1;
+  if (r > n / 2) r = n - r; // Symmetry optimization
+  let res = 1;
+  for (let i = 1; i <= r; i++) {
+    res = res * (n - i + 1) / i;
+  }
+  return res;
+}
 
 function presentSet(now: Date): Set {
   return sets.filter(set => set.startDate <= now).reduce((latest, set) => set.startDate > latest.startDate ? set : latest);
@@ -387,18 +464,159 @@ const PacksCalculator: React.FC<{ set: Set }> = ({ set }) => {
   );
 };
 
+const LandDrawCalculator: React.FC = () => {
+  const [deckSize, setDeckSize] = useState(60);
+  const [landCount, setLandCount] = useState(24);
+  const [drawCount, setDrawCount] = useState(7);
+  const [targetMin, setTargetMin] = useState(2);
+  const [targetMax, setTargetMax] = useState(4);
+  const [handSmoothing, setHandSmoothing] = useState(false);
+
+  const distribution = handSmoothing
+    ? probabilityDistributionWithSmoothing7(drawCount, landCount, deckSize)
+    : probabilityDistribution(drawCount, landCount, deckSize);
+
+  // Calculate probability for target range
+  const targetProbability = distribution
+    .slice(Math.max(0, targetMin), Math.min(distribution.length, targetMax + 1))
+    .reduce((sum, p) => sum + p, 0);
+
+  // Generate gradient colors based on target range
+  const generateColor = (k: number, total: number) => {
+    const isInTarget = k >= targetMin && k <= targetMax;
+    const baseColor = isInTarget ? [0, 255, 0] : [255, 0, 0]; // Green or Red
+
+    // Calculate brightness from 20% to 80%
+    const brightness = 0.2 + (k / Math.max(1, total - 1)) * 0.6;
+    const [r, g, b] = baseColor.map(c => Math.floor(c * brightness));
+
+    return `rgba(${r}, ${g}, ${b}, 1)`;
+  };
+
+  const chartData = {
+    labels: distribution.map((_, k) => `${k} lands`),
+    datasets: [
+      {
+        label: 'Probability',
+        data: distribution,
+        backgroundColor: distribution.map((_, k) => generateColor(k, distribution.length)),
+        borderColor: 'rgba(255, 255, 255, 0.8)',
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: {
+          color: 'white',
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context: any) {
+            const label = context.label || '';
+            const value = context.parsed;
+            const percentage = (value * 100).toFixed(2);
+            return `${label}: ${percentage}%`;
+          },
+        },
+      },
+    },
+  };
+
+  return (
+    <div className="land-draw-calculator">
+      <div className="info">
+        <h3>Calculate probability of drawing lands</h3>
+      </div>
+      <div className="container" style={{ alignItems: 'flex-start', padding: '10px' }}>
+        <SliderInput
+          label="Deck Size"
+          value={deckSize}
+          onChange={(x) => {setDeckSize(x); setLandCount(Math.min(landCount, x)); setDrawCount(Math.min(drawCount, x)); setTargetMax(Math.min(targetMax, x)); setTargetMin(Math.min(targetMin, x)); }}
+          min={1}
+          max={99}
+        />
+        <SliderInput
+          label="Land Count"
+          value={landCount}
+          onChange={(v) => setLandCount(Math.min(v, deckSize))}
+          min={0}
+          max={deckSize}
+        />
+        <SliderInput
+          label="Cards Drawn"
+          value={drawCount}
+          onChange={(v) => { setDrawCount(Math.min(v, deckSize)); setTargetMax(Math.min(targetMax, v)); setTargetMin(Math.min(targetMin, v)); } }
+          min={1}
+          max={deckSize}
+        />
+        <label style={{ margin: '10px', color: 'white', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={handSmoothing}
+            onChange={(e) => setHandSmoothing(e.target.checked)}
+            style={{ marginRight: '10px', width: '20px', height: '20px' }}
+          />
+          Hand smoothing (Bo1)
+        </label>
+      </div>
+      <div className="container" style={{ alignItems: 'flex-start', padding: '10px' }}>
+        <SliderInput
+          label="Target number of lands: Min"
+          value={targetMin}
+          onChange={(v) => { setTargetMin(v); setTargetMax(Math.max(v, targetMax)); }}
+          min={0}
+          max={drawCount}
+        />
+        <SliderInput
+          label="Max"
+          value={targetMax}
+          onChange={(v) => { setTargetMax(v); setTargetMin(Math.min(v, targetMin)); }}
+          min={0}
+          max={drawCount}
+        />
+      </div>
+      <div className="info">
+        <h2>
+          Probability of {
+            targetMin === targetMax
+              ? `exactly ${targetMin}`
+              : targetMin === 0 && targetMax < drawCount
+              ? `at most ${targetMax}`
+              : targetMax === drawCount && targetMin > 0
+              ? `at least ${targetMin}`
+              : `${targetMin}-${targetMax}`
+          } lands:{' '}
+          <span className="large" style={{ color: '#58a6ff' }}>{(targetProbability * 100).toFixed(2)}%</span>
+        </h2>
+      </div>
+      <div className="chart" style={{ maxWidth: '800px', margin: '20px auto' }}>
+        <div style={{ border: '1px solid white', padding: '20px' }}>
+          <Pie data={chartData} options={chartOptions} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const App = () => {
   const [now, setNow] = useState(new Date());
   const [set, setSet] = useState(presentSet(now));
 
   // Initialize calculator mode from URL
-  const getInitialMode = (): 'mastery' | 'packs' => {
+  const getInitialMode = (): 'mastery' | 'packs' | 'land' => {
     const hash = window.location.hash;
     if (hash === '#packs') return 'packs';
+    if (hash === '#land') return 'land';
     return 'mastery';
   };
 
-  const [calculatorMode, setCalculatorMode] = useState<'mastery' | 'packs'>(getInitialMode());
+  const [calculatorMode, setCalculatorMode] = useState<'mastery' | 'packs' | 'land'>(getInitialMode());
   const nowClipped = now < set.startDate ? set.startDate : now;
   const isCurrentSet = set.code === presentSet(now).code;
   const {questsLeft} = getTimeLeft(nowClipped, set);
@@ -519,9 +737,17 @@ const App = () => {
         >
           Packs to Wildcards
         </button>
+        <button
+          className={calculatorMode === 'land' ? 'active' : ''}
+          onClick={() => setCalculatorMode('land')}
+        >
+          Land Draw
+        </button>
       </div>
       {calculatorMode === 'packs' ? (
         <PacksCalculator set={set} />
+      ) : calculatorMode === 'land' ? (
+        <LandDrawCalculator />
       ) : (
         <>
       <div className="info">
