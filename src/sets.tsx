@@ -119,6 +119,7 @@ export const sets: Set[] = [
     startDate: new Date("2026-03-03T15:00:00Z"),
     endDate: new Date("2026-04-21T12:00:00Z"),
     maxLevel: 50,
+    rewards: require("./data/rewardsTMT.json"),
   },
   {
     code: "SOS",
