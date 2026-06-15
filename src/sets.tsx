@@ -129,24 +129,24 @@ export const sets: Set[] = [
     maxLevel: 60,
   },
   {
-    code: "OM2",
-    name: "Through the Omenpaths 2", // Guess
+    code: "MSH",
+    name: "Marvel Super Heroes",
     startDate: new Date("2026-06-23T15:00:00Z"),
     endDate: new Date("2026-08-11T12:00:00Z"),
-    maxLevel: 50,
+    maxLevel: 45,
   },
   {
-    code: "THT", // Guess
+    code: "HOB",
     name: "The Hobbit",
     startDate: new Date("2026-08-11T15:00:00Z"),
     endDate: new Date("2026-09-29T12:00:00Z"),
-    maxLevel: 50,
+    maxLevel: 45, // Guess
   },
   {
-    code: "RFR", // Guess
+    code: "FRA",
     name: "Reality Fractured",
     startDate: new Date("2026-09-29T15:00:00Z"),
     endDate: new Date("2026-11-17T12:00:00Z"),
-    maxLevel: 50,
+    maxLevel: 45, // Guess
   }
 ];
