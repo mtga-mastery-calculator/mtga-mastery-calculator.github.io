@@ -135,6 +135,7 @@ export const sets: Set[] = [
     startDate: new Date("2026-06-23T15:00:00Z"),
     endDate: new Date("2026-08-11T12:00:00Z"),
     maxLevel: 45,
+    rewards: require("./data/rewardsMSH.json"),
   },
   {
     code: "HOB",
