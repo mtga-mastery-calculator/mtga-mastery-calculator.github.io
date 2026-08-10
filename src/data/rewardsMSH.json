@@ -1,56 +1,100 @@
 [
-    [
-        [1, "Nick Fury Avatar"],
-        [1, "Captain America's Shield Companion"],
-        [1, "Captain America, Team Leader Sleeve"]
-    ],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[2, "Mythic Rare ICR"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[4, "Card", "Iron Man, Futurist Paragon"]],
-    [[4, "Card", "Hulk, Always Angry"]],
-    [[4, "Card", "Thor, Guardian of Midgard"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[2, "Booster", "MSH"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[2000, "Gold"]],
+  [
+    [1, "Nick Fury Avatar"],
+    [1, "Captain America's Shield Companion"],
+    [1, "Captain America, Team Leader Sleeve"]
+  ],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[2, "Mythic Rare ICR"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[4, "Card", "Iron Man, Futurist Paragon"]],
+  [[4, "Card", "Hulk, Always Angry"]],
+  [[4, "Card", "Thor, Guardian of Midgard"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[2, "Booster", "MSH"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[2000, "Gold"]],
 
-    [[2, "Orb"], [2, "Card Style"]],
-    [[3, "Mythic Rare ICR"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[1, "Player Draft Token"]],
-    [[3, "Orb"]],
-    [[4, "Booster", "SOS"]],
-    [[4, "Card", "Black Widow, Intel Expert"]],
-    [[4, "Card", "Captain America, Unbowed"]],
-    [[4, "Card", "Hawkeye, Trick Shot"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[2, "Mythic Rare ICR"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[3, "Mythic Rare ICR"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[1, "Player Draft Token"]],
+  [[3, "Orb"]],
+  [[4, "Booster", "SOS"]],
+  [[4, "Card", "Black Widow, Intel Expert"]],
+  [[4, "Card", "Captain America, Unbowed"]],
+  [[4, "Card", "Hawkeye, Trick Shot"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[2, "Mythic Rare ICR"]],
 
-    [[2, "Orb"], [2, "Card Style"]],
-    [[2, "Booster", "MSH"]],
-    [[1, "Orb"], [1, "Captain America's Vibranium Shield Companion"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[600, "Gems"]],
-    [[4, "Card", "Ultron, Machine Overlord"]],
-    [[4, "Card", "Thanos, Death's Consort"]],
-    [[4, "Card", "M.O.D.O.K., Master Intellect"]],
-    [[3, "Mythic Rare ICR"]],
-    [[4, "Booster", "ECL"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[2000, "Gold"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[2, "Booster", "MSH"]],
+  [
+    [1, "Orb"],
+    [1, "Captain America's Vibranium Shield Companion"]
+  ],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[600, "Gems"]],
+  [[4, "Card", "Ultron, Machine Overlord"]],
+  [[4, "Card", "Thanos, Death's Consort"]],
+  [[4, "Card", "M.O.D.O.K., Master Intellect"]],
+  [[3, "Mythic Rare ICR"]],
+  [[4, "Booster", "ECL"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[2000, "Gold"]],
 
-    [[2, "Orb"], [2, "Card Style"]],
-    [[4, "Booster", "EOE"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[4, "Card", "Absorbing Man and Titania"]],
-    [[4, "Card", "Abomination, Irradiated Brute"]],
-    [[4, "Card", "Loki, God of Lies"]],
-    [[600, "Gems"]],
-    [[2, "Orb"], [2, "Card Style"]],
-    [[1, "Orb"], [1, "Captain America's Energy Shield Companion"]],
-    [[1, "Doom's Dark Ritual Exquisite Sleeve"]],
-    [[4, "Booster", "OM1"]],
-    [[1, "Uncommon ICR - 5% Upgrade"]]
-
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[4, "Booster", "EOE"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [[4, "Card", "Absorbing Man and Titania"]],
+  [[4, "Card", "Abomination, Irradiated Brute"]],
+  [[4, "Card", "Loki, God of Lies"]],
+  [[600, "Gems"]],
+  [
+    [2, "Orb"],
+    [2, "Card Style"]
+  ],
+  [
+    [1, "Orb"],
+    [1, "Captain America's Energy Shield Companion"]
+  ],
+  [[1, "Doom's Dark Ritual Exquisite Sleeve"]],
+  [[4, "Booster", "OM1"]],
+  [[1, "Uncommon ICR - 5% Upgrade"]]
 ]
