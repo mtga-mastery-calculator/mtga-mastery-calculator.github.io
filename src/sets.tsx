@@ -143,6 +143,7 @@ export const sets: Set[] = [
     startDate: new Date("2026-08-11T15:00:00Z"),
     endDate: new Date("2026-09-29T12:00:00Z"),
     maxLevel: 45, // Guess
+    rewards: require("./data/rewardsHOB.json"),
   },
   {
     code: "FRA",

@@ -40,7 +40,7 @@ fetch(url)
             let set;
             
 
-          const match = reward.match(/^(\d+)(?:x)?\s+(.*)$/);
+          const match = reward.match(/^(\d+)(?:[x×])?\s+(.*)$/);
           if (match) {
             count = parseInt(match[1]);
             item = match[2];
