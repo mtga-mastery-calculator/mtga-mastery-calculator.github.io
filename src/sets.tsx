@@ -151,6 +151,7 @@ export const sets: Set[] = [
     startDate: new Date("2026-09-29T15:00:00Z"),
     endDate: new Date("2026-11-10T12:00:00Z"),
     maxLevel: 40, // Guess
+    rewards: require("./data/rewardsFRA.json"),
   },
   {
     code: "STR",
