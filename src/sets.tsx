@@ -142,14 +142,14 @@ export const sets: Set[] = [
     name: "The Hobbit",
     startDate: new Date("2026-08-11T15:00:00Z"),
     endDate: new Date("2026-09-29T12:00:00Z"),
-    maxLevel: 45, // Guess
+    maxLevel: 45,
     rewards: require("./data/rewardsHOB.json"),
   },
   {
     code: "FRA",
     name: "Reality Fractured",
     startDate: new Date("2026-09-29T15:00:00Z"),
-    endDate: new Date("2026-11-17T12:00:00Z"),
-    maxLevel: 45, // Guess
+    endDate: new Date("2026-11-10T12:00:00Z"),
+    maxLevel: 40, // Guess
   }
 ];
