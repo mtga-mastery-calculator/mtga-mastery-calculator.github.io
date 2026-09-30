@@ -151,5 +151,19 @@ export const sets: Set[] = [
     startDate: new Date("2026-09-29T15:00:00Z"),
     endDate: new Date("2026-11-10T12:00:00Z"),
     maxLevel: 40, // Guess
+  },
+  {
+    code: "STR",
+    name: "Star Trek",
+    startDate: new Date("2026-11-10T15:00:00Z"),
+    endDate: new Date("2027-02-02T12:00:00Z"),
+    maxLevel: 80, // Guess
+  },
+  {
+    code: "NAU",
+    name: "Nauctis",
+    startDate: new Date("2027-02-02T15:00:00Z"),
+    endDate: new Date("2027-04-06T12:00:00Z"),
+    maxLevel: 60, // Guess
   }
 ];
